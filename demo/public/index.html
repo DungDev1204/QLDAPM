@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nhóm 8 · Bản đồ giao thông</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/leaflet.css"><link rel="stylesheet" href="/style.css">
+  <script src="/vendor/leaflet.js" defer></script><script src="/app.js" defer></script>
+</head>
+<body>
+<section id="login-page" class="login-page">
+  <div class="login-story">
+    <a class="brand light" href="/"><span class="brand-icon">↗</span><span>giao thông<span class="brand-small">THÔNG MINH · NHÓM 08</span></span></a>
+    <div class="story-copy"><span class="eyebrow light-text">KẾT NỐI DỮ LIỆU. HIỂU CHUYỂN ĐỘNG.</span><h1>Mỗi tuyến đường,<br>một góc nhìn rõ hơn.</h1><p>Theo dõi trạng thái giao thông, tra cứu đoạn đường và nhận biết chất lượng dữ liệu trên cùng một bản đồ.</p></div>
+    <svg class="story-map" viewBox="0 0 620 350" aria-hidden="true">
+      <defs><pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse"><path d="M42 0H0V42" fill="none" stroke="#ffffff" stroke-opacity=".08"/></pattern></defs>
+      <rect width="620" height="350" fill="url(#grid)"/>
+      <g fill="none" stroke="#274c66" stroke-width="14"><path d="M0 320L260 70L560 210L620 180"/><path d="M80 0L330 350M300 0L140 350M600 30L20 250"/><path d="M0 85L600 300M0 160L400 20L620 120"/></g>
+      <g fill="none" stroke-linecap="round" stroke-width="7"><path d="M65 257L259 71L386 130" stroke="#3fd6bc"/><path d="M388 132L557 211" stroke="#ffc977"/><path d="M127 64L245 226" stroke="#fb7288"/><path d="M258 44L162 301" stroke="#3fd6bc"/></g>
+      <g fill="#fff" stroke="#39c9ae" stroke-width="5"><circle cx="259" cy="71" r="8"/><circle cx="245" cy="226" r="8"/><circle cx="557" cy="211" r="8"/></g>
+      <rect x="309" y="231" width="213" height="69" rx="12" fill="#fff"/><circle cx="332" cy="256" r="5" fill="#13a78b"/><text x="347" y="262" fill="#183249" font-size="14" font-family="Segoe UI">Quan sát. Tra cứu. Kết nối.</text><text x="330" y="282" fill="#738194" font-size="11" font-family="Segoe UI">10 đoạn đường trong vùng thử nghiệm</text>
+    </svg>
+    <div class="story-footer"><span>QUẢN LÝ DỰ ÁN PHẦN MỀM</span><span>PTIT · 2026</span></div>
+  </div>
+  <div class="login-form-panel">
+    <div class="login-card"><span class="pill">BẢN DEMO · L01</span><h2>Chào mừng trở lại</h2><p class="muted">Đăng nhập để mở bản đồ giao thông.</p>
+      <form id="login-form">
+        <label for="username">Tên đăng nhập</label><input id="username" name="username" autocomplete="username" value="demo" required maxlength="64">
+        <label for="password">Mật khẩu</label><div class="password-wrap"><input id="password" name="password" type="password" autocomplete="current-password" required maxlength="128" placeholder="Nhập mật khẩu"><button id="show-password" type="button" aria-label="Hiện mật khẩu">Hiện</button></div>
+        <p id="login-error" class="error" role="alert" hidden></p><button class="primary login-submit" type="submit">Đăng nhập <span>→</span></button>
+      </form>
+      <div class="demo-account"><span class="small-title">TÀI KHOẢN TRÌNH DIỄN</span><div><code>demo</code><span class="muted">/</span><code>Demo@123</code><button id="fill-demo" type="button">Điền tài khoản</button></div></div>
+      <p class="login-note">Dữ liệu và hình học đoạn đường được mô phỏng để minh họa chức năng tra cứu.</p>
+    </div>
+    <span class="login-bottom">UC-DEMO-01 · Đăng nhập & tra cứu bản đồ</span>
+  </div>
+</section>
+<div id="app-page" class="app-page" hidden>
+  <header class="app-header"><a class="brand" href="/"><span class="brand-icon">↗</span><span>giao thông<span class="brand-small">THÔNG MINH · NHÓM 08</span></span></a><div class="header-context"><span class="nav-active">Bản đồ giao thông</span><span class="pill demo-pill">Dữ liệu mô phỏng</span></div><div class="user-menu"><span class="avatar">N8</span><div><strong id="user-name"></strong><span id="user-role"></span></div><button id="logout" class="ghost">Đăng xuất</button></div></header>
+  <div class="workspace">
+    <aside class="sidebar">
+      <div class="sidebar-heading"><span class="eyebrow">KHÔNG GIAN QUAN TRẮC</span><h2>Tra cứu giao thông</h2><p>Hà Đông & Thanh Xuân, Hà Nội</p></div>
+      <form id="filter-form" class="filter-form">
+        <label for="search">Tìm đoạn đường</label><div class="search-wrap"><span aria-hidden="true">⌕</span><input id="search" placeholder="Tên đường hoặc mã…" maxlength="100" autocomplete="off"></div>
+        <label for="period">Thời điểm dữ liệu</label><select id="period"></select>
+        <label for="status">Trạng thái giao thông</label><select id="status"><option value="all">Tất cả trạng thái</option></select>
+        <div class="filter-actions"><button class="primary" type="submit">Áp dụng bộ lọc</button><button class="ghost" id="reset" type="button">Đặt lại</button></div>
+      </form>
+      <div class="roads-heading"><h3>Đoạn đường</h3><span id="road-count" class="count">0</span></div>
+      <div id="road-list" class="road-list" aria-label="Danh sách đoạn đường"></div>
+      <div class="sidebar-foot"><span class="tiny-dot"></span> Dữ liệu mẫu · Không phải thông tin trực tiếp</div>
+    </aside>
+    <main class="main-content">
+      <div class="page-heading"><div><span class="eyebrow">TỔNG QUAN MẠNG ĐƯỜNG</span><h1>Bản đồ giao thông</h1><p id="snapshot-label">Đang tải dữ liệu…</p></div><button id="refresh" class="secondary">↻ &nbsp; Tải lại dữ liệu</button></div>
+      <div id="stats" class="stats" aria-label="Tổng quan toàn bộ 10 đoạn đường"></div>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <section class="map-card">
+        <div class="map-toolbar"><div class="view-switch" aria-label="Chế độ xem"><button id="map-view" class="active" aria-pressed="true">Bản đồ</button><button id="table-view" aria-pressed="false">Bảng dữ liệu</button></div><span id="result-count" class="muted"></span><button id="fit-map" class="ghost">⊙ Toàn vùng</button></div>
+        <div class="map-and-detail">
+          <div class="map-column">
+            <div id="map-container"><div id="map" aria-label="Bản đồ các đoạn đường mô phỏng"></div><div class="map-location">HÀ NỘI <span>Vùng thử nghiệm phía Tây Nam</span></div><div id="map-empty" class="map-empty" hidden></div><div class="layer-control"><span class="small-title">LỚP HIỂN THỊ</span><label><input id="traffic-layer" type="checkbox" checked> Trạng thái giao thông</label><label><input id="station-layer" type="checkbox"> Điểm đo mô phỏng</label><label><input id="osm-layer" type="checkbox"> Nền OpenStreetMap <small>(cần mạng)</small></label><p id="basemap-message">Nền mô phỏng · Dùng được khi không có Internet</p></div></div>
+            <div id="table-container" class="table-container" hidden><table><thead><tr><th>Đoạn đường</th><th>Trạng thái</th><th>Tốc độ</th><th>Số xe / 5 phút</th><th>Quan trắc lúc</th></tr></thead><tbody id="traffic-table"></tbody></table><p id="table-empty" class="empty-copy" hidden>Không có đoạn đường phù hợp bộ lọc.</p></div>
+            <div class="legend" aria-label="Chú giải"><span><i class="dot free"></i>Thông thoáng</span><span><i class="dot busy"></i>Đông</span><span><i class="dot congested"></i>Nguy cơ ùn tắc</span><span><i class="dot stale"></i>Mất cập nhật</span><span><i class="dot insufficient"></i>Thiếu dữ liệu</span><span><i class="dot unobserved"></i>Chưa quan trắc</span></div>
+          </div>
+          <aside id="detail" class="detail" aria-label="Chi tiết đoạn đường"></aside>
+        </div>
+      </section>
+      <footer class="main-footer"><span>GeoJSON mô phỏng · Tọa độ và số liệu chỉ phục vụ học phần</span><span>L01 / UC-DEMO-01</span></footer>
+    </main>
+  </div>
+</div>
+<div id="toast" class="toast" role="status" hidden></div>
+</body></html>

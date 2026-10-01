@@ -1,0 +1,10 @@
+{
+  "name": "nhom8-traffic-map-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "L01 / UC-DEMO-01 — Đăng nhập và tra cứu bản đồ giao thông",
+  "engines": { "node": ">=22.13.0" },
+  "scripts": { "start": "node server.mjs", "dev": "node --watch server.mjs", "test": "node --test test/*.test.mjs" },
+  "dependencies": { "leaflet": "1.9.4" }
+}
