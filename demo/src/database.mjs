@@ -21,7 +21,16 @@ export function openDatabase(path){
     }
   }
   const insertRoad=db.prepare('INSERT OR IGNORE INTO roads VALUES(?,?)');
-  for(const road of roads)insertRoad.run(road.id,JSON.stringify(road));
+  const findRoad=db.prepare('SELECT data FROM roads WHERE id=?');
+  const updateGeometry=db.prepare('UPDATE roads SET data=? WHERE id=?');
+  for(const road of roads){
+    insertRoad.run(road.id,JSON.stringify(road));
+    const existing=JSON.parse(findRoad.get(road.id).data);
+    if(existing.geometrySource?.revision!==road.geometrySource.revision){
+      // Upgrade already-seeded databases without changing observations or road metadata.
+      updateGeometry.run(JSON.stringify({...existing,geometry:road.geometry,geometrySource:road.geometrySource}),road.id);
+    }
+  }
   const insertSample=db.prepare('INSERT OR IGNORE INTO observations VALUES(?,?,?)');
   for(const sample of samples())insertSample.run(sample.roadId,sample.period,JSON.stringify(sample));
   return db;

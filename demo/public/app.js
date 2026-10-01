@@ -1,3 +1,5 @@
+import {pointOnRoad} from './map-geometry.js';
+
 const $=id=>document.getElementById(id);
 const colors={free:'#129d82',busy:'#e4a126',congested:'#e66370',stale:'#78869c',insufficient:'#9276be',unobserved:'#b5bec8'};
 const state={user:null,csrf:null,meta:null,data:null,selected:null,map:null,view:'map',request:0,abort:null,tiles:null,tileTimer:null};
@@ -41,15 +43,15 @@ function initMap(){
   if(state.map)return;
   state.map=L.map('map',{zoomControl:false,minZoom:12,maxZoom:17,attributionControl:true}).setView([20.983,105.788],13);
   L.control.zoom({position:'topright'}).addTo(state.map);
-  state.map.attributionControl.addAttribution('Nhóm 8 · Hình học mô phỏng');
+  state.map.attributionControl.addAttribution('Nhóm 8 · Giao thông mô phỏng · Đường: &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>');
   state.map.createPane('context');state.map.getPane('context').style.zIndex=250;
   state.map.createPane('reference');state.map.getPane('reference').style.zIndex=350;
   state.reference=L.layerGroup().addTo(state.map);state.traffic=L.layerGroup().addTo(state.map);state.stations=L.layerGroup().addTo(state.map);state.labels=L.layerGroup().addTo(state.map);
+  state.context=L.layerGroup().addTo(state.map);
   const areas=[[[20.956,105.766],[20.962,105.762],[20.967,105.770],[20.964,105.776]],[[20.988,105.760],[20.994,105.769],[20.990,105.776],[20.984,105.768]],[[20.998,105.812],[21.006,105.819],[21.010,105.813],[21.004,105.807]]];
-  for(const coords of areas)L.polygon(coords,{pane:'context',fillColor:'#d7e6d8',fillOpacity:.85,stroke:false,interactive:false}).addTo(state.map);
-  L.polygon([[20.9637,105.7843],[20.9667,105.7844],[20.9681,105.7880],[20.9651,105.7894]],{pane:'context',fillColor:'#bcdae4',fillOpacity:.8,color:'#a4ccd9',weight:1,interactive:false}).addTo(state.map);
-  for(const [lat,lng,label] of [[20.959,105.772,'HÀ ĐÔNG'],[21.002,105.800,'THANH XUÂN'],[20.988,105.764,'NAM TỪ LIÊM']])L.marker([lat,lng],{pane:'context',interactive:false,icon:L.divIcon({className:'place-label',html:label,iconSize:[110,20]})}).addTo(state.map);
-  for(const [lat,lng,label] of [[20.9807,105.787,'▣ PTIT'],[20.965,105.786,'Hồ Văn Quán']])L.marker([lat,lng],{interactive:false,icon:L.divIcon({className:'landmark-label',html:label,iconSize:[100,20]})}).addTo(state.map);
+  for(const coords of areas)L.polygon(coords,{pane:'context',fillColor:'#d7e6d8',fillOpacity:.85,stroke:false,interactive:false}).addTo(state.context);
+  L.polygon([[20.9637,105.7843],[20.9667,105.7844],[20.9681,105.7880],[20.9651,105.7894]],{pane:'context',fillColor:'#bcdae4',fillOpacity:.8,color:'#a4ccd9',weight:1,interactive:false}).addTo(state.context);
+  for(const [lat,lng,label] of [[20.959,105.772,'HÀ ĐÔNG'],[21.002,105.800,'THANH XUÂN'],[20.988,105.764,'NAM TỪ LIÊM']])L.marker([lat,lng],{pane:'context',interactive:false,icon:L.divIcon({className:'place-label',html:label,iconSize:[110,20]})}).addTo(state.context);
   state.map.on('click',()=>{});
   requestAnimationFrame(()=>state.map.invalidateSize());
 }
@@ -86,11 +88,11 @@ function renderMap(){
   state.reference.clearLayers();state.traffic.clearLayers();state.stations.clearLayers();state.labels.clearLayers();
   for(const feature of state.data.features){
     const p=feature.properties,selected=p.id===state.selected;
-    const base=L.geoJSON(feature,{pane:'reference',style:{color:'#fff',weight:selected?14:11,opacity:1}}).addTo(state.reference);
-    const line=L.geoJSON(feature,{style:{color:$('traffic-layer').checked?colors[p.status]:'#91a3ad',weight:selected?7:5,opacity:.95,dashArray:['stale','insufficient','unobserved'].includes(p.status)&&$('traffic-layer').checked?'7 7':null}}).addTo(state.traffic);
+    const base=L.geoJSON(feature,{pane:'reference',smoothFactor:0,style:{color:'#fff',weight:selected?9:6,opacity:.85}}).addTo(state.reference);
+    const line=L.geoJSON(feature,{smoothFactor:0,style:{color:$('traffic-layer').checked?colors[p.status]:'#91a3ad',weight:selected?5:3,opacity:.95,dashArray:['stale','insufficient','unobserved'].includes(p.status)&&$('traffic-layer').checked?'7 7':null}}).addTo(state.traffic);
     const tooltip=`<strong>${escapeHtml(p.name)}</strong><br>${state.meta.statusLabels[p.status]}`;
     line.bindTooltip(tooltip,{className:'road-tooltip',sticky:true});line.on('click',()=>selectRoad(p.id,false));base.on('click',()=>selectRoad(p.id,false));
-    const coords=feature.geometry.coordinates,middle=coords[Math.floor(coords.length/2)];
+    const middle=pointOnRoad(feature.geometry);
     if($('station-layer').checked&&p.sample){L.circleMarker([middle[1],middle[0]],{radius:5,color:'#fff',weight:2,fillColor:'#355c76',fillOpacity:1}).bindTooltip(escapeHtml(p.sample.source),{className:'station-tooltip'}).on('click',()=>selectRoad(p.id,false)).addTo(state.stations);}
     if(selected){L.marker([middle[1],middle[0]],{interactive:false,icon:L.divIcon({className:'landmark-label',html:escapeHtml(p.name),iconSize:[100,20],iconAnchor:[-10,10]})}).addTo(state.labels);}
   }
@@ -118,10 +120,12 @@ function setView(view){state.view=view;$('map-container').hidden=view!=='map';$(
 function disableTiles(message){
   if(state.tiles){state.map?.removeLayer(state.tiles);state.tiles=null;}
   clearTimeout(state.tileTimer);$('osm-layer').checked=false;$('basemap-message').textContent=message;
+  if(state.map&&state.context)state.context.addTo(state.map);
 }
 function toggleTiles(){
   if(!$('osm-layer').checked){disableTiles('Nền mô phỏng · Dùng được khi không có Internet');return;}
   let errors=0;
+  state.map.removeLayer(state.context);
   $('basemap-message').textContent='Đang tải nền OpenStreetMap…';
   state.tiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'}).addTo(state.map);
   state.tiles.on('tileerror',()=>{if(++errors>=3)disableTiles('Không tải được nền trực tuyến. Đã chuyển về nền mô phỏng; các đoạn đường vẫn tra cứu được.');});

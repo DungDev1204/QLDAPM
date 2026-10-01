@@ -25,4 +25,4 @@ cd demo
 npm test
 ```
 
-Luồng đã triển khai: đăng nhập → tra cứu bản đồ → lọc thời điểm/trạng thái/tên đường → xem chi tiết → chuyển bản đồ/bảng → đăng xuất. Dữ liệu hoàn toàn mô phỏng; không phải quan trắc thực địa.
+Luồng đã triển khai: đăng nhập → tra cứu bản đồ → lọc thời điểm/trạng thái/tên đường → xem chi tiết → chuyển bản đồ/bảng → đăng xuất. Số liệu giao thông hoàn toàn mô phỏng; không phải quan trắc thực địa. Hình học tuyến đường dùng bản chụp [OpenStreetMap](https://www.openstreetmap.org/copyright) lưu cục bộ, theo giấy phép ODbL; các đoạn và hai chiều đường được giữ riêng để bám theo nền bản đồ.

@@ -5,7 +5,7 @@
   <title>Nhóm 8 · Bản đồ giao thông</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/vendor/leaflet.css"><link rel="stylesheet" href="/style.css">
-  <script src="/vendor/leaflet.js" defer></script><script src="/app.js" defer></script>
+  <script src="/vendor/leaflet.js" defer></script><script src="/app.js" type="module"></script>
 </head>
 <body>
 <section id="login-page" class="login-page">
@@ -30,7 +30,7 @@
         <p id="login-error" class="error" role="alert" hidden></p><button class="primary login-submit" type="submit">Đăng nhập <span>→</span></button>
       </form>
       <div class="demo-account"><span class="small-title">TÀI KHOẢN TRÌNH DIỄN</span><div><code>demo</code><span class="muted">/</span><code>Demo@123</code><button id="fill-demo" type="button">Điền tài khoản</button></div></div>
-      <p class="login-note">Dữ liệu và hình học đoạn đường được mô phỏng để minh họa chức năng tra cứu.</p>
+      <p class="login-note">Hình học đường từ OpenStreetMap. Số liệu giao thông được mô phỏng để minh họa chức năng tra cứu.</p>
     </div>
     <span class="login-bottom">UC-DEMO-01 · Đăng nhập & tra cứu bản đồ</span>
   </div>
@@ -58,14 +58,15 @@
         <div class="map-toolbar"><div class="view-switch" aria-label="Chế độ xem"><button id="map-view" class="active" aria-pressed="true">Bản đồ</button><button id="table-view" aria-pressed="false">Bảng dữ liệu</button></div><span id="result-count" class="muted"></span><button id="fit-map" class="ghost">⊙ Toàn vùng</button></div>
         <div class="map-and-detail">
           <div class="map-column">
-            <div id="map-container"><div id="map" aria-label="Bản đồ các đoạn đường mô phỏng"></div><div class="map-location">HÀ NỘI <span>Vùng thử nghiệm phía Tây Nam</span></div><div id="map-empty" class="map-empty" hidden></div><div class="layer-control"><span class="small-title">LỚP HIỂN THỊ</span><label><input id="traffic-layer" type="checkbox" checked> Trạng thái giao thông</label><label><input id="station-layer" type="checkbox"> Điểm đo mô phỏng</label><label><input id="osm-layer" type="checkbox"> Nền OpenStreetMap <small>(cần mạng)</small></label><p id="basemap-message">Nền mô phỏng · Dùng được khi không có Internet</p></div></div>
+            <div id="map-container"><div id="map" aria-label="Bản đồ các tuyến đường với trạng thái giao thông mô phỏng"></div><div class="map-location">HÀ NỘI <span>Vùng thử nghiệm phía Tây Nam</span></div><div id="map-empty" class="map-empty" hidden></div><div class="layer-control"><span class="small-title">LỚP HIỂN THỊ</span><label><input id="traffic-layer" type="checkbox" checked> Trạng thái giao thông</label><label><input id="station-layer" type="checkbox"> Điểm đo mô phỏng</label><label><input id="osm-layer" type="checkbox"> Nền OpenStreetMap <small>(cần mạng)</small></label><p id="basemap-message">Nền mô phỏng · Dùng được khi không có Internet</p></div></div>
             <div id="table-container" class="table-container" hidden><table><thead><tr><th>Đoạn đường</th><th>Trạng thái</th><th>Tốc độ</th><th>Số xe / 5 phút</th><th>Quan trắc lúc</th></tr></thead><tbody id="traffic-table"></tbody></table><p id="table-empty" class="empty-copy" hidden>Không có đoạn đường phù hợp bộ lọc.</p></div>
             <div class="legend" aria-label="Chú giải"><span><i class="dot free"></i>Thông thoáng</span><span><i class="dot busy"></i>Đông</span><span><i class="dot congested"></i>Nguy cơ ùn tắc</span><span><i class="dot stale"></i>Mất cập nhật</span><span><i class="dot insufficient"></i>Thiếu dữ liệu</span><span><i class="dot unobserved"></i>Chưa quan trắc</span></div>
+            <p class="map-explanation">Đường màu thể hiện trạng thái theo tỷ lệ tốc độ, không phải mật độ xe. Nét đứt: dữ liệu mất cập nhật, thiếu hoặc chưa quan trắc. Chấm tròn: điểm đo mô phỏng.</p>
           </div>
           <aside id="detail" class="detail" aria-label="Chi tiết đoạn đường"></aside>
         </div>
       </section>
-      <footer class="main-footer"><span>GeoJSON mô phỏng · Tọa độ và số liệu chỉ phục vụ học phần</span><span>L01 / UC-DEMO-01</span></footer>
+      <footer class="main-footer"><span>Hình học đường: OpenStreetMap · Số liệu giao thông mô phỏng</span><span>L01 / UC-DEMO-01</span></footer>
     </main>
   </div>
 </div>

@@ -2,7 +2,7 @@
 
 ## 1. Phạm vi đã triển khai
 
-Một UC nghiệp vụ tra cứu bản đồ cùng đăng nhập/đăng xuất dùng chung. Người dùng xem 10 đoạn đường mô phỏng ở phía Tây Nam Hà Nội, lọc theo tên/mã, trạng thái và mốc thời gian; chọn đoạn đường để xem thông số, nguồn và thời điểm quan trắc.
+Một UC nghiệp vụ tra cứu bản đồ cùng đăng nhập/đăng xuất dùng chung. Người dùng xem 10 tuyến đường ở phía Tây Nam Hà Nội với hình học OpenStreetMap và quan trắc mô phỏng, lọc theo tên/mã, trạng thái và mốc thời gian; chọn đoạn đường để xem thông số, nguồn và thời điểm quan trắc.
 
 | Thành phần UC | Nội dung |
 |---|---|
@@ -82,13 +82,13 @@ Nếu trước đó đã thay bộ lọc, ứng dụng nhớ lựa chọn trong 
 
 ## 6. Dữ liệu và quy tắc
 
-- 10 đoạn đường với hình học GeoJSON được đơn giản hóa theo khu vực Hà Đông, Thanh Xuân. Vị trí, ranh giới và số liệu chỉ phục vụ học phần.
+- 10 tuyến đường với hình học GeoJSON từ OpenStreetMap, bản chụp dữ liệu ngày 06/05/2026, lưu tại `demo/src/road-geometries.json` (© OpenStreetMap contributors, ODbL). Mỗi way được giữ riêng trong MultiLineString, tránh nối tắt qua nhà hoặc giữa hai chiều đường. Màu tuyến biểu thị trạng thái theo tỷ lệ tốc độ; số xe / 5 phút không phải phép đo mật độ xe.
 - Có ba ảnh chụp quan trắc: 07:50, 07:55 và 08:00 ngày 30/09/2026, giờ Việt Nam. Một mốc 29/09 không có dữ liệu dùng thử ngoại lệ.
 - Thời gian mô phỏng cố định để có thể trình diễn lại; độ cũ được tính so với **mốc đang xem**, không so với giờ thật của máy. Phiên đăng nhập vẫn hết hạn theo giờ thật.
 - Tốc độ tham chiếu > 0; đủ ít nhất 8/10 bản tin mới được phân mức. Tỷ lệ tốc độ ≥ 0,6: thông thoáng; ≥ 0,3 và < 0,6: đông; < 0,3: nguy cơ ùn tắc.
 - Bản tin quá 120 giây: mất cập nhật. Thiếu tốc độ hoặc không đủ bản tin: thiếu dữ liệu. Không có quan trắc: chưa quan trắc.
 - Màu luôn đi kèm nhãn trong danh sách, bảng, chú giải và khung chi tiết.
-- Lớp bản đồ nền mặc định chạy cục bộ; OpenStreetMap chỉ là tùy chọn cần Internet. Lớp đường mô phỏng và API cục bộ hoạt động độc lập với nền trực tuyến.
+- Lớp bản đồ nền mặc định chạy cục bộ; nền OpenStreetMap là tùy chọn cần Internet. Hình học đường OSM và API cục bộ hoạt động độc lập với nền trực tuyến. Các vùng minh họa trên nền cục bộ được ẩn khi bật OSM. Khởi động lại máy chủ tự nâng cấp hình học trong SQLite cũ, giữ nguyên quan trắc và tài khoản.
 
 ## 7. Cấu trúc mã và lưu trữ
 
@@ -96,7 +96,9 @@ Nếu trước đó đã thay bộ lọc, ứng dụng nhớ lựa chọn trong 
 demo/
   server.mjs           Máy chủ HTTP, API, phiên và kiểm tra quyền
   src/database.mjs    Tạo SQLite, tài khoản, dữ liệu mẫu
-  src/fixtures.mjs    GeoJSON, các mốc quan trắc, quy tắc phân loại
+  src/fixtures.mjs    Danh mục đường, các mốc quan trắc, quy tắc phân loại
+  src/road-geometries.json  Hình học OSM cục bộ và mã way nguồn
+  scripts/import-road-geometries.mjs  Nhập lại hình học từ bản chụp Overpass out geom
   public/index.html   Giao diện đăng nhập và tra cứu
   public/style.css    Giao diện máy tính và điện thoại
   public/app.js       Tương tác bản đồ, bộ lọc, bảng và xử lý lỗi

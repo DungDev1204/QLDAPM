@@ -24,7 +24,7 @@ test('Login creates HttpOnly SameSite session; traffic returns 10 GeoJSON roads'
   const res=await login();assert.equal(res.status,200);assert.match(res.headers.get('set-cookie'),/HttpOnly/);assert.match(res.headers.get('set-cookie'),/SameSite=Strict/);
   const data=await (await request('/api/traffic')).json();assert.equal(data.features.length,10);
   assert.deepEqual(data.summary,{free:4,busy:1,congested:2,stale:1,insufficient:1,unobserved:1});
-  assert.equal(data.features[0].geometry.type,'LineString');assert.equal(data.features[0].properties.name,'Nguyễn Trãi');
+  assert.equal(data.features[0].geometry.type,'MultiLineString');assert.equal(data.features[0].properties.name,'Nguyễn Trãi');
   const me=await (await request('/api/session')).json();assert.equal(me.user.username,'demo');assert.equal(me.user.hash,undefined);
 });
 test('Server applies case/accent-insensitive name, status, and period filters',async()=>{
