@@ -1,0 +1,30 @@
+DEMO GIAO THÔNG THÔNG MINH · NHÓM 8
+
+Dành cho Windows 10/11 64-bit (x64).
+
+1. Copy file Mo_Demo_Nhom8.exe sang máy thuyết trình hoặc USB.
+2. Nhấp đúp Mo_Demo_Nhom8.exe. Đợi vài giây ở lần mở đầu tiên.
+3. Web demo tự mở trong trình duyệt mặc định.
+4. Đăng nhập: demo / Demo@123.
+
+Không cần clone dự án, VS Code, cài Node.js, npm hay gõ lệnh.
+File chạy chứa sẵn bộ chạy, thư viện, hình học đường và dữ liệu mẫu.
+
+Nếu đóng tab trình duyệt: mở lại file .exe để trở lại demo đang chạy.
+Để tắt hoàn toàn: chuột phải biểu tượng demo ở khay hệ thống
+(góc dưới bên phải, có thể nằm trong nút ^) → Tắt demo.
+
+Demo dùng được khi không có Internet, với nền sơ đồ cục bộ.
+Muốn hiện nền OpenStreetMap chi tiết: cần Internet, tích Nền OpenStreetMap.
+Số liệu giao thông là mô phỏng, không phải thông tin trực tiếp.
+
+Dữ liệu tạo riêng trên mỗi máy trong:
+%LOCALAPPDATA%\Nhom8TrafficDemo
+Không cần quyền Administrator. Không chạy trực tiếp trong file ZIP.
+
+Bản này chưa ký số. Chính sách bảo mật của máy thuyết trình có thể
+yêu cầu người quản lý máy cho phép chạy ứng dụng. Hãy thử trước buổi báo cáo.
+
+Hình học: © OpenStreetMap contributors, giấy phép ODbL.
+https://www.openstreetmap.org/copyright
+Node.js và Leaflet được kèm giấy phép trong bộ chạy đã giải nén.
