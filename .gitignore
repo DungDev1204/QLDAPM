@@ -1,3 +1,6 @@
 # Temporary working files and downloaded tools
 /tmp/
 /outputs/demo-thuyet-trinh/
+*.inspect.ndjson
+/docs/ảnh QLDAPM/
+/docs/ảnh QLDAPM.rar
