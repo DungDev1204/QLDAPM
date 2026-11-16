@@ -13,7 +13,9 @@ Một UC nghiệp vụ tra cứu bản đồ cùng đăng nhập/đăng xuất d
 | Hậu điều kiện | Hiển thị đúng dữ liệu theo bộ lọc; dữ liệu giao thông không bị thay đổi; đăng xuất hủy phiên phía máy chủ |
 | Ngoại lệ | Sai tài khoản; tài khoản khóa; hết phiên; thiếu dữ liệu; dữ liệu cũ; không có kết quả; nền bản đồ hoặc API lỗi |
 
-Không triển khai các UC tạo sự cố, duyệt phản ánh, xe buýt, bãi đỗ hoặc AI trong bản demo này.
+Không triển khai các UC tạo sự cố, duyệt phản ánh, xe buýt, bãi đỗ hoặc AI trong bản demo này. Quyết định thu hẹp phạm vi và đổi công nghệ so với báo cáo được ghi tại [Sổ CR](../quan-ly/So_CR.md) (CR-01, CR-02).
+
+Vai trò trong demo: `viewer` (người xem bản đồ, tương ứng vai người dân/người xem công khai trong báo cáo), `operator`, `manager`. Ba vai trò này có cùng quyền tra cứu. Demo chưa có vai trò `admin` vì chưa có chức năng quản trị.
 
 ## 2. Cài đặt và chạy
 
@@ -102,7 +104,10 @@ demo/
   public/index.html   Giao diện đăng nhập và tra cứu
   public/style.css    Giao diện máy tính và điện thoại
   public/app.js       Tương tác bản đồ, bộ lọc, bảng và xử lý lỗi
-  test/traffic.test.mjs  Kiểm thử API, xác thực và nghiệp vụ
+  public/map-geometry.js  Tính điểm đặt nhãn trên hình học nhiều đoạn
+  test/traffic.test.mjs   Kiểm thử API, xác thực và nghiệp vụ (10 bài)
+  test/geometry.test.mjs  Kiểm thử hình học OSM và nâng cấp dữ liệu (3 bài)
+  portable/           Script đóng gói và kiểm tra bản chạy .exe
   data/demo.sqlite    Sinh tự động khi chạy lần đầu
 ```
 
@@ -125,6 +130,6 @@ cd demo
 npm test
 ```
 
-Các bài test dùng SQLite riêng trong bộ nhớ, không sửa cơ sở dữ liệu đang demo. Bao phủ đăng nhập sai/đúng, tài khoản khóa, quyền, hết phiên, đăng xuất, CSRF, lọc, mốc rỗng, ngưỡng 0,3/0,6, dữ liệu cũ và chất lượng bản tin.
+Kết quả gần nhất: 13/13 bài đạt (xem [KET_QUA_KIEM_TRA.md](KET_QUA_KIEM_TRA.md)). Các bài test dùng SQLite riêng trong bộ nhớ, không sửa cơ sở dữ liệu đang demo. Bao phủ đăng nhập sai/đúng, tài khoản khóa, quyền, hết phiên, đăng xuất, CSRF, lọc, mốc rỗng, ngưỡng 0,3/0,6, dữ liệu cũ và chất lượng bản tin.
 
 Tài liệu kỹ thuật dùng khi triển khai: [Leaflet 1.9.4](https://leafletjs.com/reference.html), [Node.js SQLite](https://nodejs.org/api/sqlite.html). Không cần khóa API bản đồ để chạy nền mô phỏng.

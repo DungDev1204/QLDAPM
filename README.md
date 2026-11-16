@@ -6,6 +6,8 @@
 
 ## Mang demo đi thuyết trình
 
+> Tệp `.exe` **không nằm trong Git** (thư mục `outputs/demo-thuyet-trinh/` bị `.gitignore`). Sau khi clone, chạy `Build-Portable.ps1` (bên dưới) để tạo tệp, hoặc lấy bản nhóm gửi kèm bài nộp.
+
 Trên Windows 10/11 64-bit (x64), chỉ cần copy **`outputs/demo-thuyet-trinh/Mo_Demo_Nhom8.exe`** sang máy khác hoặc USB rồi nhấp đúp. Web demo tự mở trong trình duyệt mặc định. Đăng nhập **demo / Demo@123**. Không cần clone dự án, mở code, cài Node.js hoặc chạy npm.
 
 Để mở lại trang, chạy file `.exe` lần nữa. Để tắt máy chủ demo, chuột phải biểu tượng demo ở khay hệ thống → **Tắt demo**. Nền sơ đồ và dữ liệu mẫu dùng được offline; nền OpenStreetMap chi tiết cần Internet. Hướng dẫn đi kèm: `outputs/demo-thuyet-trinh/HUONG_DAN.txt`.
@@ -41,5 +43,7 @@ Trên Windows, có thể chạy `Chay_demo.ps1` bằng PowerShell. Script sẽ c
 cd demo
 npm test
 ```
+
+Kết quả gần nhất: 13/13 bài đạt (Node.js 24.11.1, ngày 12/11/2026).
 
 Luồng đã triển khai: đăng nhập → tra cứu bản đồ → lọc thời điểm/trạng thái/tên đường → xem chi tiết → chuyển bản đồ/bảng → đăng xuất. Số liệu giao thông hoàn toàn mô phỏng; không phải quan trắc thực địa. Hình học tuyến đường dùng bản chụp [OpenStreetMap](https://www.openstreetmap.org/copyright) lưu cục bộ, theo giấy phép ODbL; các đoạn và hai chiều đường được giữ riêng để bám theo nền bản đồ.

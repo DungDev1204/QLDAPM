@@ -3,7 +3,7 @@
 **Dự án:** Hệ thống quản lý giao thông thông minh — Nhóm 8  
 **Mục đích:** Chọn **một luồng chức năng** để xây dựng bản demo độc lập.  
 **Căn cứ:** Báo cáo `Bao_cao_QLDA_Giao_thong_Thong_minh_Nhom_8.docx`, các mục 2.1–2.17.  
-**Trạng thái:** Đặc tả UC để lựa chọn; chưa triển khai code demo.
+**Trạng thái:** Nhóm đã chọn **L01 / UC-DEMO-01 — Tra cứu bản đồ giao thông** và đã triển khai tại `demo/`. Xem [CR-02](../quan-ly/So_CR.md) để biết lý do chọn L01 thay vì L03 như mục 4 khuyến nghị. Các luồng còn lại giữ ở mức đặc tả.
 
 **Quy ước:** L01–L14 là mã lựa chọn. UC-DEMO-01–UC-DEMO-14 là mã đặc tả trong tài liệu này, không thay thế mã UC trong báo cáo gốc. Một luồng là một kịch bản của UC; một kịch bản demo đầu cuối có thể đi qua nhiều UC, ví dụ Đăng nhập → Quản lý sự cố → Đăng xuất.
 
@@ -605,7 +605,9 @@ Trong mỗi đặc tả, **luồng chính của UC nghiệp vụ bắt đầu sa
 | Muốn nhấn mạnh đặc trưng giám sát giao thông | **L02 — Xác minh cảnh báo** | Liên kết dữ liệu quan trắc, kết luận của người vận hành và sự cố |
 | Muốn trình diễn phần AI trong báo cáo | **L12 — Dự báo tốc độ** | Có kết quả dự báo và đối chiếu MAE, nhưng cần thêm bước chuẩn bị mô hình và dữ liệu |
 
-**Khuyến nghị chọn L03 / UC-DEMO-03.** Phạm vi có thể chốt thành: đăng nhập → tạo sự cố thủ công → xác minh → phân công → ghi xử lý → đóng phiếu → xem lịch sử → đăng xuất. Luồng này đủ để trình diễn giao diện, API, cơ sở dữ liệu, phân quyền và quy tắc nghiệp vụ trong một chức năng.
+> **Quyết định cuối cùng:** nhóm chọn L01 (xem CR-02). Đoạn dưới đây giữ nguyên khuyến nghị ban đầu để truy vết.
+
+**Khuyến nghị ban đầu: chọn L03 / UC-DEMO-03.** Phạm vi có thể chốt thành: đăng nhập → tạo sự cố thủ công → xác minh → phân công → ghi xử lý → đóng phiếu → xem lịch sử → đăng xuất. Luồng này đủ để trình diễn giao diện, API, cơ sở dữ liệu, phân quyền và quy tắc nghiệp vụ trong một chức năng.
 
 ## 5. Cách chốt lựa chọn trước khi viết code
 
